@@ -179,7 +179,17 @@ const TechPortfolio = () => {
       }
     };
 
-    const handleMouseMove = (e) => {
+    interface MousePosition {
+      x: number;
+      y: number;
+    }
+
+    interface MouseMoveEvent extends React.MouseEvent<HTMLDivElement> {
+      clientX: number;
+      clientY: number;
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
@@ -192,7 +202,11 @@ const TechPortfolio = () => {
     };
   }, []);
 
-  const scrollToSection = (sectionId) => {
+  interface ScrollToSectionFn {
+    (sectionId: string): void;
+  }
+
+  const scrollToSection: ScrollToSectionFn = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -673,11 +687,11 @@ const TechPortfolio = () => {
               
               <form onSubmit={(e) => {
                 e.preventDefault();
-                const formData = new FormData(e.target);
-                const name = formData.get('name');
-                const email = formData.get('email');
-                const subject = formData.get('subject');
-                const message = formData.get('message');
+                const formData = new FormData(e.target as HTMLFormElement);
+                const name = (formData.get('name') ?? '') as string;
+                const email = (formData.get('email') ?? '') as string;
+                const subject = (formData.get('subject') ?? '') as string;
+                const message = (formData.get('message') ?? '') as string;
                 
                 const emailBody = `Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMessage:%0D%0A${message}`;
                 const mailtoLink = `mailto:henrymacsam01@gmail.com?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
